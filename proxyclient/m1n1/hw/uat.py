@@ -482,12 +482,8 @@ class UAT(Reloadable):
         self.dirty.clear()
 
         for ctx, ranges in self.dirty_ranges.items():
-            if ctx == 0:
-                continue
-
             asid = ctx << 48
             self.u.inst("tlbi aside1os, x0", asid)
-            #self.u.inst("tlbi vmalle1os")
 
     def invalidate_cache(self):
         self.pt_cache = {}
