@@ -41,6 +41,8 @@
 #define MIDR_PART_T6021_AVALANCHE   0x39
 #define MIDR_PART_T6031_EVEREST     0x49
 #define MIDR_PART_T6031_SAWTOOTH    0x48
+#define MIDR_PART_T8132_ECORE_DONAN 0x52
+#define MIDR_PART_T8132_PCORE_DONAN 0x53
 
 #define MIDR_REV_LOW  GENMASK(3, 0)
 #define MIDR_PART     GENMASK(15, 4)
@@ -212,6 +214,14 @@ const char *init_cpu(void)
         case MIDR_PART_T6031_SAWTOOTH:
             cpu = "M3 Max Sawtooth";
             init_t6031_sawtooth();
+            break;
+
+        case MIDR_PART_T8132_ECORE_DONAN:
+            cpu = "M4 E Core Donan";
+            break;
+
+        case MIDR_PART_T8132_PCORE_DONAN:
+            cpu = "M4 P Core Donan";
             break;
 
         default:
