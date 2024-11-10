@@ -102,6 +102,7 @@ OBJECTS := \
 	chickens_avalanche.o \
 	chickens_blizzard.o \
 	chickens_cyclone_typhoon.o \
+	chickens_donan.o \
 	chickens_everest.o \
 	chickens_firestorm.o \
 	chickens_hurricane_zephyr.o \
