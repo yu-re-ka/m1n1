@@ -73,6 +73,7 @@ void init_t6031_everest(int rev);
 
 bool cpufeat_actlr_el2, cpufeat_fast_ipi, cpufeat_mmu_sprr;
 bool cpufeat_global_sleep, cpufeat_workaround_cyclone_cache;
+bool cpufeat_ovrd_accessible;
 
 const char *init_cpu(void)
 {
@@ -229,6 +230,9 @@ const char *init_cpu(void)
             break;
     }
 
+    if (part < MIDR_PART_T8132_ECORE_DONAN)
+        cpufeat_ovrd_accessible = true;
+
     if (part >= MIDR_PART_T8110_BLIZZARD)
         cpufeat_actlr_el2 = true;
 
@@ -261,9 +265,11 @@ const char *init_cpu(void)
     }
 
     /* Unmask external IRQs, set WFI mode to up (2) */
-    reg_mask(SYS_IMP_APL_CYC_OVRD,
-             CYC_OVRD_FIQ_MODE_MASK | CYC_OVRD_IRQ_MODE_MASK | CYC_OVRD_WFI_MODE_MASK,
-             CYC_OVRD_FIQ_MODE(0) | CYC_OVRD_IRQ_MODE(0) | CYC_OVRD_WFI_MODE(2));
+    if (cpufeat_ovrd_accessible) {
+        reg_mask(SYS_IMP_APL_CYC_OVRD,
+                 CYC_OVRD_FIQ_MODE_MASK | CYC_OVRD_IRQ_MODE_MASK | CYC_OVRD_WFI_MODE_MASK,
+                 CYC_OVRD_FIQ_MODE(0) | CYC_OVRD_IRQ_MODE(0) | CYC_OVRD_WFI_MODE(2));
+    }
 
     // Enable branch prediction state retention across ACC sleep
     reg_mask(SYS_IMP_APL_ACC_CFG, ACC_CFG_BP_SLEEP_MASK, ACC_CFG_BP_SLEEP(3));
